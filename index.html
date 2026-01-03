@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Mindgames Hub - Play & Earn Coins</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #00d4ff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .coins, .rank {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid #00d4ff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .auth-box {
+            background: linear-gradient(135deg, rgba(48, 43, 99, 0.9), rgba(36, 36, 62, 0.9));
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-box h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #00d4ff;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00d4ff;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(0, 212, 255, 0.5);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            border: 1px solid #00d4ff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, rgba(48, 43, 99, 0.6), rgba(36, 36, 62, 0.6));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .game-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .game-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+
+        .game-coins {
+            font-size: 14px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .game-difficulty {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-modal.active {
+            display: flex;
+        }
+
+        .game-container {
+            background: linear-gradient(135deg, rgba(48, 43, 99, 0.95), rgba(36, 36, 62, 0.95));
+            border: 2px solid #00d4ff;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .game-header h3 {
+            color: #00d4ff;
+            font-size: 24px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #00d4ff;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .game-content {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard {
+            background: linear-gradient(135deg, rgba(48, 43, 99, 0.6), rgba(36, 36, 62, 0.6));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        .leaderboard h3 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            align-items: center;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            color: #ffd700;
+            width: 30px;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+            color: #fff;
+        }
+
+        .leaderboard-coins {
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+            z-index: 2000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .tic-tac-toe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            font-size: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .cell:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .dice-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dice:hover {
+            transform: scale(1.1) rotateY(180deg);
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 24px;
+            color: #ffd700;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">🎮 MINDGAMES HUB</div>
+        <div class="user-info">
+            <div class="coins">
+                <span>💰</span>
+                <span id="coins">0</span>
+            </div>
+            <div class="rank">
+                <span>⭐</span>
+                <span id="rank">Bronze</span>
+            </div>
+            <button class="btn btn-secondary" onclick="window.location.href='admin-data.html'" style="width: auto; padding: 8px 15px;">📊 Data</button>
+            <button class="btn btn-secondary" onclick="logout()" style="width: auto; padding: 8px 15px;">Logout</button>
+        </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-box">
+            <h2 id="authTitle">Login</h2>
+            <div id="loginForm" style="display: block;">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password">
+                </div>
+                <button class="btn" onclick="handleLogin()">Login</button>
+                <button class="btn btn-secondary" onclick="switchToSignup()" style="margin-top: 10px;">Create Account</button>
+            </div>
+
+            <div id="signupForm" style="display: none;">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="signupUsername" placeholder="Choose username">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" placeholder="Min 8 characters">
+                </div>
+                <button class="btn" onclick="handleSignup()">Create Account</button>
+                <button class="btn btn-secondary" onclick="switchToLogin()" style="margin-top: 10px;">Already have account?</button>
+            </div>
+
+            <div id="otpForm" style="display: none;">
+                <p style="text-align: center; margin-bottom: 20px;">Enter the secret code to verify</p>
+                <div class="form-group">
+                    <input type="text" id="otpInput" placeholder="Enter code" maxlength="6" style="text-align: center; font-size: 20px; letter-spacing: 10px;">
+                </div>
+                <button class="btn" onclick="handleCodeVerification()">Verify Code</button>
+                <button class="btn btn-secondary" onclick="switchToLogin()" style="margin-top: 10px;">Back to Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="mainContent" style="display: none;">
+        <h1>🎮 MINDGAMES HUB - 30 GAMES</h1>
+        
+        <!-- Category Filter -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button class="btn btn-secondary" onclick="filterGames('all')" style="margin: 5px;">All Games</button>
+            <button class="btn btn-secondary" onclick="filterGames('Arcade')" style="margin: 5px;">🎮 Arcade</button>
+            <button class="btn btn-secondary" onclick="filterGames('Puzzle')" style="margin: 5px;">🧩 Puzzle</button>
+            <button class="btn btn-secondary" onclick="filterGames('Reaction')" style="margin: 5px;">⚡ Reaction</button>
+            <button class="btn btn-secondary" onclick="filterGames('Brain')" style="margin: 5px;">🧠 Brain</button>
+            <button class="btn btn-secondary" onclick="filterGames('Skill')" style="margin: 5px;">🎯 Skill</button>
+            <button class="btn btn-secondary" onclick="filterGames('Special')" style="margin: 5px;">⭐ Special</button>
+        </div>
+
+        <div class="games-grid" id="gamesGrid"></div>
+
+        <div class="leaderboard">
+            <h3>🏆 Top Players</h3>
+            <div id="leaderboardList"></div>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div class="game-modal" id="gameModal">
+        <div class="game-container">
+            <div class="game-header">
+                <h3 id="gameTitle">Game</h3>
+                <button class="close-btn" onclick="closeGame()">✕</button>
+            </div>
+            <div class="game-content" id="gameContent"></div>
+            <div class="score-display" id="scoreDisplay" style="display: none;"></div>
+            <button class="btn" id="gameActionBtn" onclick="playGame()">Start Game</button>
+        </div>
+    </div>
+
+    <script>
+        // Game Data - 30 UNIQUE GAMES
+        const GAMES = [
+            // Arcade Games (5)
+            { id: 1, name: 'TicTacToe', icon: '⭕', coins: 100, difficulty: 'Easy', description: 'Classic 3x3 strategy game', category: 'Arcade' },
+            { id: 2, name: 'Dice Roll', icon: '🎲', coins: 80, difficulty: 'Easy', description: 'Roll the dice and win big!', category: 'Arcade' },
+            { id: 3, name: 'Snake', icon: '🐍', coins: 150, difficulty: 'Medium', description: 'Classic snake arcade game', category: 'Arcade' },
+            { id: 4, name: 'Brick Breaker', icon: '🧱', coins: 130, difficulty: 'Medium', description: 'Break all the bricks!', category: 'Arcade' },
+            { id: 5, name: 'Pong', icon: '🎾', coins: 120, difficulty: 'Medium', description: 'Classic two-player pong game', category: 'Arcade' },
+
+            // Puzzle Games (6)
+            { id: 6, name: '2048', icon: '🔢', coins: 200, difficulty: 'Hard', description: 'Tile merging puzzle game', category: 'Puzzle' },
+            { id: 7, name: 'Memory Match', icon: '🧠', coins: 120, difficulty: 'Medium', description: 'Match pairs of cards', category: 'Puzzle' },
+            { id: 8, name: 'Sliding Puzzle', icon: '🎯', coins: 140, difficulty: 'Medium', description: 'Arrange tiles in correct order', category: 'Puzzle' },
+            { id: 9, name: 'Minesweeper', icon: '💣', coins: 160, difficulty: 'Hard', description: 'Find all safe tiles', category: 'Puzzle' },
+            { id: 10, name: 'Sudoku Mini', icon: '🔲', coins: 180, difficulty: 'Hard', description: '4x4 Sudoku puzzle', category: 'Puzzle' },
+            { id: 11, name: 'Connect4', icon: '🔴', coins: 130, difficulty: 'Medium', description: 'Connect 4 pieces to win', category: 'Puzzle' },
+
+            // Reaction Games (5)
+            { id: 12, name: 'Reaction Test', icon: '⚡', coins: 70, difficulty: 'Easy', description: 'Test your reaction speed', category: 'Reaction' },
+            { id: 13, name: 'Whack-a-Mole', icon: '🔨', coins: 100, difficulty: 'Easy', description: 'Click moles as fast as you can', category: 'Reaction' },
+            { id: 14, name: 'Color Match', icon: '🎨', coins: 90, difficulty: 'Easy', description: 'Match colors quickly', category: 'Reaction' },
+            { id: 15, name: 'Tap Speed', icon: '👆', coins: 80, difficulty: 'Easy', description: 'Tap as fast as possible', category: 'Reaction' },
+            { id: 16, name: 'Spot Difference', icon: '👀', coins: 140, difficulty: 'Medium', description: 'Find differences in images', category: 'Reaction' },
+
+            // Brain Games (6)
+            { id: 17, name: 'Number Guess', icon: '🔢', coins: 90, difficulty: 'Easy', description: 'Guess the secret number', category: 'Brain' },
+            { id: 18, name: 'Word Guessing', icon: '📝', coins: 110, difficulty: 'Medium', description: 'Guess the word with hints', category: 'Brain' },
+            { id: 19, name: 'Hangman', icon: '🎭', coins: 110, difficulty: 'Easy', description: 'Guess the word letter by letter', category: 'Brain' },
+            { id: 20, name: 'Trivia Quiz', icon: '❓', coins: 120, difficulty: 'Medium', description: 'Answer general knowledge questions', category: 'Brain' },
+            { id: 21, name: 'Math Challenge', icon: '➕', coins: 100, difficulty: 'Medium', description: 'Solve quick math problems', category: 'Brain' },
+            { id: 22, name: 'Pattern Memory', icon: '🎨', coins: 130, difficulty: 'Hard', description: 'Remember and repeat patterns', category: 'Brain' },
+
+            // Skill Games (5)
+            { id: 23, name: 'Typing Speed', icon: '⌨️', coins: 150, difficulty: 'Hard', description: 'Type words as fast as you can', category: 'Skill' },
+            { id: 24, name: 'Maze Runner', icon: '🗺️', coins: 140, difficulty: 'Medium', description: 'Navigate through the maze', category: 'Skill' },
+            { id: 25, name: 'Simon Says', icon: '🎵', coins: 120, difficulty: 'Hard', description: 'Repeat the color sequence', category: 'Skill' },
+            { id: 26, name: 'Tetris', icon: '⬜', coins: 170, difficulty: 'Hard', description: 'Classic block stacking game', category: 'Skill' },
+            { id: 27, name: 'Ball Bounce', icon: '🔵', coins: 110, difficulty: 'Medium', description: 'Keep the ball bouncing', category: 'Skill' },
+
+            // Special Games (3)
+            { id: 28, name: 'Flappy Bird', icon: '🐦', coins: 140, difficulty: 'Hard', description: 'Navigate through pipes', category: 'Special' },
+            { id: 29, name: 'Catch Game', icon: '🥅', coins: 100, difficulty: 'Easy', description: 'Catch falling items', category: 'Special' },
+            { id: 30, name: 'Roulette', icon: '🎰', coins: 160, difficulty: 'Easy', description: 'Spin and win!', category: 'Special' },
+        ];
+
+        // User Data
+        let currentUser = null;
+        let leaderboard = [
+            { rank: 1, name: 'ProPlayer', coins: 5000 },
+            { rank: 2, name: 'GameMaster', coins: 4500 },
+            { rank: 3, name: 'CoinHunter', coins: 4000 },
+            { rank: 4, name: 'SkillKing', coins: 3500 },
+            { rank: 5, name: 'TopGamer', coins: 3000 },
+        ];
+
+        // Initialize
+        function init() {
+            const saved = localStorage.getItem('currentUser');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                showMainContent();
+            } else {
+                showAuthModal();
+            }
+            console.log('App initialized. Demo OTP: 123456');
+        }
+
+        // Generate random OTP
+        function generateOTP() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        // Send OTP via Email using SendGrid
+        async function sendOTPEmailReal(email, otp, username) {
+            try {
+                const SENDGRID_API_KEY = 'SG.YOUR_SENDGRID_API_KEY_HERE'; // Replace with actual key
+                
+                // Check if API key is set
+                if (!SENDGRID_API_KEY || SENDGRID_API_KEY.includes('YOUR_')) {
+                    console.warn('⚠️ SendGrid API key not configured. Using console log fallback.');
+                    console.log('📧 ════════════════════════════════════════');
+                    console.log('📧 OTP EMAIL WOULD BE SENT HERE:');
+                    console.log('📧 To: ' + email);
+                    console.log('📧 OTP: ' + otp);
+                    console.log('📧 ════════════════════════════════════════');
+                    return;
+                }
+
+                const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${SENDGRID_API_KEY}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        personalizations: [{
+                            to: [{ email: email }],
+                            subject: `🎮 Your Minigames Hub OTP: ${otp}`,
+                        }],
+                        from: { email: 'yuggoswami089@gmail.com', name: 'Mindgames Hub' },
+                        content: [{
+                            type: 'text/html',
+                            value: `
+                                <!DOCTYPE html>
+                                <html>
+                                <head>
+                                    <style>
+                                        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+                                        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; text-align: center; }
+                                        .header { color: #00d4ff; font-size: 28px; margin-bottom: 20px; }
+                                        .otp-box { background: linear-gradient(135deg, #00d4ff, #0099ff); color: white; padding: 20px; border-radius: 10px; font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 20px 0; }
+                                        .message { color: #333; font-size: 16px; line-height: 1.6; }
+                                        .footer { color: #999; font-size: 12px; margin-top: 30px; }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class="container">
+                                        <div class="header">🎮 Minigames Hub</div>
+                                        <p class="message">Hi ${username || 'Player'},</p>
+                                        <p class="message">Your OTP for email verification is:</p>
+                                        <div class="otp-box">${otp}</div>
+                                        <p class="message">This OTP will expire in 10 minutes.</p>
+                                        <p class="message">If you didn't request this, please ignore this email.</p>
+                                        <div class="footer">
+                                            <p>© 2025 Minigames Hub. All rights reserved.</p>
+                                            <p>Contact: yuggoswami089@gmail.com | kalpeshgoswami9@gmail.com</p>
+                                        </div>
+                                    </div>
+                                </body>
+                                </html>
+                            `
+                        }]
+                    })
+                });
+
+                if (response.ok) {
+                    console.log('✅ OTP email sent successfully to:', email);
+                    showNotification('📧 Email sent!');
+                } else {
+                    const errorData = await response.json();
+                    console.error('❌ SendGrid Error:', errorData);
+                    console.log('📧 OTP for testing:', otp);
+                }
+            } catch (error) {
+                console.error('❌ Email service error:', error);
+                console.log('📧 OTP for testing:', otp);
+            }
+        }
+
+        // Save login data to localStorage (like a database)
+        function saveLoginData(email, password, username) {
+            const loginData = {
+                email,
+                password,
+                username,
+                createdAt: new Date().toISOString(),
+                id: Date.now()
+            };
+            
+            // Save to localStorage (acts as database)
+            const allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+            allUsers.push(loginData);
+            localStorage.setItem('allUsers', JSON.stringify(allUsers));
+            
+            console.log('✅ User saved:', loginData);
+            return loginData;
+        }
+
+        // Auth Functions
+        function switchToSignup() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+            document.getElementById('authTitle').textContent = 'Create Account';
+        }
+
+        function switchToLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('otpForm').style.display = 'none';
+            document.getElementById('authTitle').textContent = 'Login';
+        }
+
+        function handleSignup() {
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (!username || !email || !password) {
+                alert('❌ Please fill all fields!');
+                return;
+            }
+
+            if (password.length < 8) {
+                alert('❌ Password must be at least 8 characters!');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                alert('❌ Invalid email!');
+                return;
+            }
+
+            // Save temp user data
+            localStorage.setItem('tempUser', JSON.stringify({ username, email, password }));
+            
+            showNotification(`✅ Account created! Verify with code.`);
+
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('otpForm').style.display = 'block';
+            document.getElementById('authTitle').textContent = 'Verify Account';
+            document.getElementById('otpInput').focus();
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                alert('❌ Please fill all fields!');
+                return;
+            }
+
+            // Check if user exists in saved data
+            const allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+            const userExists = allUsers.find(u => u.email === email && u.password === password);
+
+            if (!userExists) {
+                alert('❌ Email or password incorrect!\n\n💡 Try signup first');
+                return;
+            }
+
+            // Store temp user for verification
+            localStorage.setItem('tempUser', JSON.stringify({ email, password }));
+            
+            showNotification(`✅ Enter verification code!`);
+
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('otpForm').style.display = 'block';
+            document.getElementById('authTitle').textContent = 'Verify Account';
+            document.getElementById('otpInput').focus();
+        }
+
+        function handleOTPVerification() {
+            const code = document.getElementById('otpInput').value;
+            const tempUser = JSON.parse(localStorage.getItem('tempUser'));
+
+            if (!code) {
+                alert('❌ Please enter code!');
+                return;
+            }
+
+            // Check if code is correct (531321)
+            if (code !== '531321') {
+                alert(`❌ Invalid code!\n\n✅ Correct code: 531321`);
+                return;
+            }
+
+            // Code verified - create user session
+            currentUser = {
+                id: Date.now(),
+                email: tempUser.email,
+                username: tempUser.username || 'Player ' + Math.random().toString(36).substr(2, 9),
+                coins: 0,
+                rank: 'Bronze',
+                loginTime: new Date().toISOString()
+            };
+
+            // Save this user (for signup)
+            if (tempUser.username && tempUser.password) {
+                saveLoginData(tempUser.email, tempUser.password, tempUser.username);
+            }
+
+            // Save session
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.removeItem('tempUser');
+            
+            console.log('✅ User logged in:', currentUser);
+            showNotification('✅ Login successful!');
+            
+            showMainContent();
+        }
+
+        function handleCodeVerification() {
+            handleOTPVerification();
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                location.reload();
+            }
+        }
+
+        function showAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'none';
+        }
+
+        function showMainContent() {
+            document.getElementById('authModal').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            renderGames();
+            updateUserInfo();
+            renderLeaderboard();
+        }
+
+        // Games Functions
+        function renderGames(filter = 'all') {
+            const grid = document.getElementById('gamesGrid');
+            let gamesToShow = GAMES;
+            
+            if (filter !== 'all') {
+                gamesToShow = GAMES.filter(g => g.category === filter);
+            }
+            
+            grid.innerHTML = gamesToShow.map(game => `
+                <div class="game-card">
+                    <div class="game-icon">${game.icon}</div>
+                    <div class="game-name">${game.name}</div>
+                    <div class="game-coins">💰 ${game.coins} coins</div>
+                    <div class="game-difficulty">${game.difficulty}</div>
+                    <button class="play-btn" onclick="openGame(${game.id})">Play Now</button>
+                </div>
+            `).join('');
+        }
+
+        function filterGames(category) {
+            renderGames(category);
+        }
+
+        function openGame(gameId) {
+            const game = GAMES.find(g => g.id === gameId);
+            document.getElementById('gameTitle').textContent = game.name + ' - ' + game.description;
+            document.getElementById('gameActionBtn').textContent = 'Start Game';
+            document.getElementById('scoreDisplay').style.display = 'none';
+            
+            let gameHTML = '';
+
+            switch(game.id) {
+                case 1: // TicTacToe
+                    gameHTML = `
+                        <div class="tic-tac-toe-board" id="board">
+                            ${[0,1,2,3,4,5,6,7,8].map(i => `<div class="cell" onclick="playTicTacToe(${i})"></div>`).join('')}
+                        </div>
+                        <p style="text-align: center; color: #00d4ff; margin-top: 20px;" id="gameStatus">Your turn (X)</p>
+                    `;
+                    break;
+                case 2: // Dice Roll
+                    gameHTML = `
+                        <div class="dice-container">
+                            <div class="dice" onclick="rollDice()">🎲</div>
+                        </div>
+                        <p style="text-align: center; color: #ffd700; font-size: 20px;" id="diceResult">Click dice to roll!</p>
+                    `;
+                    break;
+                case 3: // Snake
+                    gameHTML = `
+                        <canvas id="snakeCanvas" width="400" height="400" style="background: #000; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">Use arrow keys to move</p>
+                    `;
+                    setTimeout(() => initSnakeGame(), 100);
+                    break;
+                case 4: // Brick Breaker
+                    gameHTML = `
+                        <canvas id="brickCanvas" width="400" height="300" style="background: #000; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">Click and drag paddle</p>
+                    `;
+                    setTimeout(() => initBrickGame(), 100);
+                    break;
+                case 5: // Pong
+                    gameHTML = `
+                        <canvas id="pongCanvas" width="400" height="300" style="background: #000; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">AI vs Player - Use UP/DOWN keys</p>
+                    `;
+                    setTimeout(() => initPongGame(), 100);
+                    break;
+                case 6: // 2048
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Use Arrow Keys to Move</p>
+                            <div id="grid2048" style="display: grid; grid-template-columns: repeat(4, 80px); gap: 10px; margin: 20px auto; width: fit-content;"></div>
+                        </div>
+                    `;
+                    setTimeout(() => init2048Game(), 100);
+                    break;
+                case 7: // Memory Match
+                    gameHTML = `
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;">
+                            ${[0,1,2,3,4,5,6,7,8,9,10,11].map(i => `<button class="cell" style="font-size: 24px; padding: 15px;" onclick="flipCard(${i})">❓</button>`).join('')}
+                        </div>
+                        <p style="text-align: center; color: #00d4ff;">Match pairs of cards!</p>
+                    `;
+                    break;
+                case 8: // Sliding Puzzle
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Arrange tiles in order</p>
+                            <div id="slidingGrid" style="display: grid; grid-template-columns: repeat(3, 80px); gap: 5px; margin: 20px auto;"></div>
+                        </div>
+                    `;
+                    setTimeout(() => initSlidingPuzzle(), 100);
+                    break;
+                case 9: // Minesweeper
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Avoid the 💣 mines!</p>
+                            <div id="minesweeperGrid" style="display: grid; grid-template-columns: repeat(5, 40px); gap: 3px; margin: 20px auto; width: fit-content;"></div>
+                        </div>
+                    `;
+                    setTimeout(() => initMinesweeper(), 100);
+                    break;
+                case 10: // Sudoku Mini
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Fill the 4x4 grid</p>
+                            <div id="sudokuGrid" style="display: grid; grid-template-columns: repeat(4, 50px); gap: 5px; margin: 20px auto;"></div>
+                        </div>
+                    `;
+                    setTimeout(() => initSudoku(), 100);
+                    break;
+                case 11: // Connect4
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Connect 4 pieces to win!</p>
+                            <div id="connect4Grid" style="display: grid; grid-template-columns: repeat(7, 40px); gap: 3px; margin: 20px auto;"></div>
+                        </div>
+                    `;
+                    setTimeout(() => initConnect4(), 100);
+                    break;
+                case 12: // Reaction Test
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Click when the screen turns GREEN!</p>
+                            <div id="reactionBox" style="width: 200px; height: 200px; margin: 20px auto; background: rgba(0, 0, 0, 0.5); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="testReaction()">
+                                <p style="color: #fff;">Ready?</p>
+                            </div>
+                            <p id="reactionTime" style="color: #ffd700; margin-top: 20px;"></p>
+                        </div>
+                    `;
+                    break;
+                case 13: // Whack-a-Mole
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #ffd700; margin: 20px 0;" id="moleScore">Score: 0</p>
+                            <div id="moleGrid" style="display: grid; grid-template-columns: repeat(3, 80px); gap: 10px; margin: 20px auto;"></div>
+                        </div>
+                    `;
+                    setTimeout(() => initWhackAMole(), 100);
+                    break;
+                case 14: // Color Match
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Match the color!</p>
+                            <div id="targetColor" style="width: 100px; height: 100px; margin: 20px auto; border-radius: 10px; border: 3px solid #00d4ff;"></div>
+                            <div id="colorOptions" style="display: grid; grid-template-columns: repeat(3, 80px); gap: 10px; margin: 20px auto; width: fit-content;"></div>
+                        </div>
+                    `;
+                    setTimeout(() => initColorMatch(), 100);
+                    break;
+                case 15: // Tap Speed
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #ffd700; font-size: 20px;" id="tapCount">Taps: 0</p>
+                            <button id="tapBtn" class="btn" style="width: 150px; height: 150px; font-size: 60px; margin: 20px auto; cursor: pointer;" onclick="incrementTap()">👆</button>
+                            <p style="color: #00d4ff; margin: 20px 0;">Tap as fast as you can for 10 seconds!</p>
+                        </div>
+                    `;
+                    setTimeout(() => initTapSpeed(), 100);
+                    break;
+                case 16: // Spot Difference
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Find 3 differences</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <div id="img1" style="border: 2px solid #00d4ff; padding: 10px; cursor: pointer;">Image 1</div>
+                                <div id="img2" style="border: 2px solid #00d4ff; padding: 10px; cursor: pointer;">Image 2</div>
+                            </div>
+                            <p id="diffScore" style="color: #ffd700; margin-top: 20px;">Differences found: 0/3</p>
+                        </div>
+                    `;
+                    break;
+                case 17: // Number Guess
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Guess a number between 1 and 100</p>
+                            <input type="number" id="guessInput" min="1" max="100" placeholder="Enter number" style="padding: 10px; width: 100%; margin-bottom: 15px;">
+                            <button class="btn" onclick="guessNumber()">Check Guess</button>
+                            <p style="color: #ffd700; margin-top: 20px;" id="guessResult"></p>
+                        </div>
+                    `;
+                    break;
+                case 18: // Word Guessing
+                case 19: // Hangman
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;" id="wordDisplay">_ _ _ _ _</p>
+                            <p style="color: #ffd700; margin: 10px 0;" id="wrongCount">Wrong guesses: 0/6</p>
+                            <input type="text" id="letterInput" placeholder="Guess a letter" maxlength="1" style="padding: 10px; width: 100%; margin-bottom: 15px;">
+                            <button class="btn" onclick="guessLetter()">Guess Letter</button>
+                        </div>
+                    `;
+                    setTimeout(() => initHangman(), 100);
+                    break;
+                case 20: // Trivia Quiz
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; font-size: 18px; margin: 20px 0;" id="question">What is the capital of France?</p>
+                            <div id="answerOptions" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin: 20px 0;"></div>
+                            <p style="color: #ffd700; margin-top: 20px;" id="quizScore">Score: 0</p>
+                        </div>
+                    `;
+                    setTimeout(() => initTrivia(), 100);
+                    break;
+                case 21: // Math Challenge
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; font-size: 24px; margin: 20px 0;" id="mathProblem">5 + 3 = ?</p>
+                            <input type="number" id="mathAnswer" placeholder="Answer" style="padding: 10px; width: 100%; margin-bottom: 15px;">
+                            <button class="btn" onclick="checkMathAnswer()">Submit</button>
+                            <p style="color: #ffd700; margin-top: 20px;" id="mathScore">Correct: 0</p>
+                        </div>
+                    `;
+                    setTimeout(() => initMathChallenge(), 100);
+                    break;
+                case 22: // Pattern Memory
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Memorize and repeat the pattern!</p>
+                            <div id="patternGrid" style="display: grid; grid-template-columns: repeat(2, 80px); gap: 10px; margin: 20px auto;"></div>
+                            <p style="color: #ffd700; margin-top: 20px;" id="patternScore">Level: 1</p>
+                        </div>
+                    `;
+                    setTimeout(() => initPatternMemory(), 100);
+                    break;
+                case 23: // Typing Speed
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;" id="wordToType">Type this word...</p>
+                            <input type="text" id="typingInput" placeholder="Type the word" style="padding: 10px; width: 100%; margin-bottom: 15px;">
+                            <p style="color: #ffd700; margin-top: 20px;" id="typingScore">Words correct: 0</p>
+                        </div>
+                    `;
+                    setTimeout(() => initTyping(), 100);
+                    break;
+                case 24: // Maze Runner
+                    gameHTML = `
+                        <canvas id="mazeCanvas" width="400" height="400" style="background: #000; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">Use arrow keys to navigate</p>
+                    `;
+                    setTimeout(() => initMaze(), 100);
+                    break;
+                case 25: // Simon Says
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <p style="color: #00d4ff; margin: 20px 0;">Repeat the pattern!</p>
+                            <div id="simonGrid" style="display: grid; grid-template-columns: repeat(2, 80px); gap: 10px; margin: 20px auto;"></div>
+                            <p style="color: #ffd700; margin-top: 20px;" id="simonLevel">Level: 1</p>
+                        </div>
+                    `;
+                    setTimeout(() => initSimon(), 100);
+                    break;
+                case 26: // Tetris
+                    gameHTML = `
+                        <canvas id="tetrisCanvas" width="200" height="400" style="background: #000; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">Use arrow keys to play</p>
+                    `;
+                    setTimeout(() => initTetris(), 100);
+                    break;
+                case 27: // Ball Bounce
+                    gameHTML = `
+                        <canvas id="bounceCanvas" width="400" height="300" style="background: #000; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">Keep the ball bouncing!</p>
+                    `;
+                    setTimeout(() => initBallBounce(), 100);
+                    break;
+                case 28: // Flappy Bird
+                    gameHTML = `
+                        <canvas id="flappyCanvas" width="400" height="400" style="background: #87ceeb; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">Click to flap!</p>
+                    `;
+                    setTimeout(() => initFlappyBird(), 100);
+                    break;
+                case 29: // Catch Game
+                    gameHTML = `
+                        <canvas id="catchCanvas" width="400" height="400" style="background: #000; border: 2px solid #00d4ff; border-radius: 10px; display: block; margin: 20px auto;"></canvas>
+                        <p style="text-align: center; color: #00d4ff;">Move mouse to catch items</p>
+                    `;
+                    setTimeout(() => initCatchGame(), 100);
+                    break;
+                case 30: // Roulette
+                    gameHTML = `
+                        <div style="text-align: center;">
+                            <div id="wheelContainer" style="margin: 20px 0;">
+                                <canvas id="wheelCanvas" width="300" height="300" style="border: 3px solid #00d4ff; border-radius: 50%;"></canvas>
+                            </div>
+                            <button class="btn" onclick="spinWheel()" style="margin-top: 20px;">SPIN!</button>
+                            <p style="color: #ffd700; margin-top: 20px; font-size: 20px;" id="wheelResult"></p>
+                        </div>
+                    `;
+                    setTimeout(() => initRoulette(), 100);
+                    break;
+                default:
+                    gameHTML = '<p style="text-align: center; color: #ffd700;">Game coming soon!</p>';
+            }
+
+            document.getElementById('gameContent').innerHTML = gameHTML;
+            document.getElementById('gameModal').classList.add('active');
+        }
+
+        function closeGame() {
+            document.getElementById('gameModal').classList.remove('active');
+        }
+
+        function playGame() {
+            alert('Game completed! You earned coins! 🎉');
+            const gameTitle = document.getElementById('gameTitle').textContent.split(' - ')[0];
+            const game = GAMES.find(g => g.name === gameTitle);
+            if (game) {
+                earnCoins(game.coins);
+            }
+            closeGame();
+        }
+
+        // Game Functions
+        function playTicTacToe(index) {
+            const cells = document.querySelectorAll('.cell');
+            if (cells[index].textContent === '') {
+                cells[index].textContent = '❌';
+                setTimeout(() => {
+                    const emptyCells = Array.from(cells).filter(c => c.textContent === '');
+                    if (emptyCells.length > 0) {
+                        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                        randomCell.textContent = '⭕';
+                    }
+                }, 500);
+            }
+        }
+
+        function rollDice() {
+            const result = Math.floor(Math.random() * 6) + 1;
+            document.getElementById('diceResult').textContent = `You rolled: ${result} 🎲`;
+        }
+
+        function flipCard(index) {
+            const card = event.target;
+            const cards = ['🍎', '🍎', '🍊', '🍊', '🍇', '🍇', '🍓', '🍓', '🍒', '🍒', '🍌', '🍌'];
+            card.textContent = cards[index];
+        }
+
+        function guessNumber() {
+            const guess = parseInt(document.getElementById('guessInput').value);
+            const target = 42;
+            if (guess === target) {
+                document.getElementById('guessResult').textContent = '✅ Correct! You won!';
+            } else if (guess < target) {
+                document.getElementById('guessResult').textContent = '📈 Too low!';
+            } else {
+                document.getElementById('guessResult').textContent = '📉 Too high!';
+            }
+        }
+
+        function testReaction() {
+            const box = document.getElementById('reactionBox');
+            box.style.background = '#00ff00';
+            box.style.cursor = 'default';
+            const start = Date.now();
+            box.onclick = null;
+            box.innerHTML = '<p style="color: #000;">Click!</p>';
+            
+            setTimeout(() => {
+                box.onclick = () => {
+                    const time = Date.now() - start;
+                    document.getElementById('reactionTime').textContent = `Your reaction time: ${time}ms! ⚡`;
+                    box.style.background = 'rgba(0, 0, 0, 0.5)';
+                    box.innerHTML = '<p style="color: #fff;">Ready?</p>';
+                    box.onclick = testReaction;
+                };
+            }, Math.random() * 3000 + 1000);
+        }
+
+        function guessLetter() {
+            const letter = document.getElementById('letterInput').value;
+            console.log('Letter guessed:', letter);
+            document.getElementById('letterInput').value = '';
+        }
+
+        function incrementTap() {
+            const btn = document.getElementById('tapBtn');
+            let count = parseInt(document.getElementById('tapCount').textContent.split(': ')[1]) || 0;
+            count++;
+            document.getElementById('tapCount').textContent = `Taps: ${count}`;
+        }
+
+        function initTapSpeed() {
+            let count = 0;
+            const btn = document.getElementById('tapBtn');
+            btn.onclick = () => {
+                count++;
+                document.getElementById('tapCount').textContent = `Taps: ${count}`;
+            };
+            setTimeout(() => {
+                btn.disabled = true;
+                showNotification(`⏱️ Time's up! You got ${count} taps!`);
+            }, 10000);
+        }
+
+        function initSnakeGame() {
+            const canvas = document.getElementById('snakeCanvas');
+            const ctx = canvas.getContext('2d');
+            const gridSize = 20;
+            let snake = [{x: 10, y: 10}];
+            let food = {x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20)};
+            let dx = 1, dy = 0;
+            let gameRunning = true;
+            let score = 0;
+
+            function drawGame() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw snake
+                ctx.fillStyle = '#00d4ff';
+                snake.forEach(segment => {
+                    ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 1, gridSize - 1);
+                });
+                
+                // Draw food
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
+            }
+
+            function update() {
+                const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+                
+                if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || 
+                    snake.some(s => s.x === head.x && s.y === head.y)) {
+                    gameRunning = false;
+                    document.getElementById('gameActionBtn').textContent = 'Game Over! Play Again';
+                    return;
+                }
+                
+                snake.unshift(head);
+                
+                if (head.x === food.x && head.y === food.y) {
+                    score += 10;
+                    food = {x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20)};
+                } else {
+                    snake.pop();
+                }
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -1; }
+                if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = 1; }
+                if (e.key === 'ArrowLeft' && dx === 0) { dx = -1; dy = 0; }
+                if (e.key === 'ArrowRight' && dx === 0) { dx = 1; dy = 0; }
+            });
+
+            const interval = setInterval(() => {
+                if (!gameRunning) {
+                    clearInterval(interval);
+                    earnCoins(150);
+                    return;
+                }
+                update();
+                drawGame();
+            }, 200);
+        }
+
+        function initBrickGame() {
+            const canvas = document.getElementById('brickCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let paddle = {x: 150, width: 80, height: 10, y: 280};
+            let ball = {x: 200, y: 250, radius: 5, dx: 3, dy: -3};
+            let bricks = [];
+            let score = 0;
+
+            // Create bricks
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 5; col++) {
+                    bricks.push({x: col * 80, y: row * 20, width: 75, height: 15});
+                }
+            }
+
+            function draw() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw paddle
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+                
+                // Draw ball
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffd700';
+                ctx.fill();
+                
+                // Draw bricks
+                ctx.fillStyle = '#ff6b6b';
+                bricks.forEach(brick => {
+                    ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
+                });
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                paddle.x = e.clientX - rect.left - paddle.width / 2;
+            });
+
+            const interval = setInterval(() => {
+                ball.x += ball.dx;
+                ball.y += ball.dy;
+                
+                if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1;
+                if (ball.y - ball.radius < 0) ball.dy *= -1;
+                if (ball.y + ball.radius > canvas.height) {
+                    clearInterval(interval);
+                    earnCoins(130);
+                    return;
+                }
+                
+                if (ball.y + ball.radius > paddle.y && ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
+                    ball.dy *= -1;
+                }
+                
+                draw();
+            }, 30);
+        }
+
+        function initPongGame() {
+            const canvas = document.getElementById('pongCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let ball = {x: 200, y: 150, radius: 5, dx: 3, dy: 3};
+            let player = {x: 10, y: 100, width: 10, height: 80};
+            let ai = {x: 380, y: 100, width: 10, height: 80};
+
+            function draw() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+                ctx.fillRect(ai.x, ai.y, ai.width, ai.height);
+                
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffd700';
+                ctx.fill();
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp' && player.y > 0) player.y -= 10;
+                if (e.key === 'ArrowDown' && player.y < 300) player.y += 10;
+            });
+
+            const interval = setInterval(() => {
+                ball.x += ball.dx;
+                ball.y += ball.dy;
+                
+                if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) ball.dy *= -1;
+                
+                if (ball.x - ball.radius < player.x + player.width && ball.y > player.y && ball.y < player.y + player.height) {
+                    ball.dx *= -1;
+                }
+                
+                if (ball.x + ball.radius > ai.x && ball.y > ai.y && ball.y < ai.y + ai.height) {
+                    ball.dx *= -1;
+                }
+                
+                ai.y = ball.y - ai.height / 2;
+                
+                draw();
+            }, 30);
+        }
+
+        function init2048Game() {
+            const grid = document.getElementById('grid2048');
+            let tiles = [];
+            
+            for (let i = 0; i < 16; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'cell';
+                tile.style.fontSize = '20px';
+                tile.style.fontWeight = 'bold';
+                tile.textContent = '';
+                grid.appendChild(tile);
+                tiles.push({value: 0, el: tile});
+            }
+            
+            function addTile() {
+                const empty = tiles.filter(t => t.value === 0);
+                if (empty.length) {
+                    const tile = empty[Math.floor(Math.random() * empty.length)];
+                    tile.value = Math.random() < 0.9 ? 2 : 4;
+                    updateDisplay();
+                }
+            }
+            
+            function updateDisplay() {
+                tiles.forEach(t => {
+                    t.el.textContent = t.value || '';
+                    t.el.style.background = t.value ? 'rgba(0, 212, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
+                });
+            }
+            
+            addTile();
+            addTile();
+            updateDisplay();
+            
+            document.addEventListener('keydown', (e) => {
+                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                    e.preventDefault();
+                    // Simple move logic
+                    addTile();
+                    updateDisplay();
+                }
+            });
+        }
+
+        function initSlidingPuzzle() {
+            const grid = document.getElementById('slidingGrid');
+            const nums = [1,2,3,4,5,6,7,8,null];
+            
+            nums.forEach((num, i) => {
+                const tile = document.createElement('button');
+                if (num === null) {
+                    tile.style.background = '#000';
+                    tile.disabled = true;
+                } else {
+                    tile.textContent = num;
+                    tile.className = 'btn';
+                    tile.style.width = '80px';
+                    tile.style.height = '80px';
+                }
+                grid.appendChild(tile);
+            });
+        }
+
+        function initMinesweeper() {
+            const grid = document.getElementById('minesweeperGrid');
+            const mines = new Set();
+            
+            while (mines.size < 5) {
+                mines.add(Math.floor(Math.random() * 25));
+            }
+            
+            for (let i = 0; i < 25; i++) {
+                const cell = document.createElement('button');
+                cell.className = 'btn';
+                cell.style.width = '40px';
+                cell.style.height = '40px';
+                cell.style.padding = '0';
+                cell.textContent = '🔲';
+                
+                cell.onclick = () => {
+                    if (mines.has(i)) {
+                        cell.textContent = '💣';
+                        showNotification('Game Over! 💣');
+                    } else {
+                        cell.textContent = '✅';
+                    }
+                };
+                
+                grid.appendChild(cell);
+            }
+        }
+
+        function initSudoku() {
+            const grid = document.getElementById('sudokuGrid');
+            const puzzle = [1, null, 3, 4, null, null, null, 2, null];
+            
+            puzzle.forEach((num, i) => {
+                const cell = document.createElement('input');
+                cell.type = 'number';
+                cell.min = '1';
+                cell.max = '4';
+                cell.value = num || '';
+                cell.style.width = '50px';
+                cell.style.height = '50px';
+                cell.style.fontSize = '18px';
+                cell.style.textAlign = 'center';
+                cell.style.background = 'rgba(0, 212, 255, 0.1)';
+                cell.style.border = '1px solid #00d4ff';
+                cell.style.color = '#fff';
+                cell.style.borderRadius = '5px';
+                
+                if (num) cell.disabled = true;
+                
+                grid.appendChild(cell);
+            });
+        }
+
+        function initConnect4() {
+            const grid = document.getElementById('connect4Grid');
+            const cells = [];
+            
+            for (let i = 0; i < 42; i++) {
+                const cell = document.createElement('button');
+                cell.className = 'btn';
+                cell.style.width = '40px';
+                cell.style.height = '40px';
+                cell.style.padding = '0';
+                cell.textContent = '⭕';
+                cell.style.margin = '2px';
+                
+                cell.onclick = () => {
+                    cell.textContent = cell.textContent === '⭕' ? '🔴' : '⭕';
+                };
+                
+                grid.appendChild(cell);
+                cells.push(cell);
+            }
+        }
+
+        function initMaze() {
+            const canvas = document.getElementById('mazeCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Draw simple maze
+            ctx.strokeStyle = '#00d4ff';
+            ctx.lineWidth = 2;
+            
+            ctx.strokeRect(50, 50, 300, 300);
+            ctx.strokeRect(100, 100, 200, 200);
+            ctx.strokeRect(150, 150, 100, 100);
+            
+            // Player
+            let player = {x: 75, y: 75, size: 10};
+            
+            ctx.fillStyle = '#ffd700';
+            ctx.fillRect(player.x, player.y, player.size, player.size);
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp') player.y -= 10;
+                if (e.key === 'ArrowDown') player.y += 10;
+                if (e.key === 'ArrowLeft') player.x -= 10;
+                if (e.key === 'ArrowRight') player.x += 10;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(50, 50, 300, 300);
+                ctx.strokeRect(100, 100, 200, 200);
+                ctx.strokeRect(150, 150, 100, 100);
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(player.x, player.y, player.size, player.size);
+            });
+        }
+
+        function initSimon() {
+            const grid = document.getElementById('simonGrid');
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'];
+            const sequence = [];
+            let playerSequence = [];
+            let level = 1;
+            
+            colors.forEach(color => {
+                const btn = document.createElement('button');
+                btn.style.background = color;
+                btn.style.width = '80px';
+                btn.style.height = '80px';
+                btn.style.border = '2px solid #00d4ff';
+                btn.style.borderRadius = '10px';
+                btn.style.cursor = 'pointer';
+                
+                btn.onclick = () => {
+                    playerSequence.push(color);
+                    if (playerSequence.length === sequence.length) {
+                        if (playerSequence.every((c, i) => c === sequence[i])) {
+                            level++;
+                            document.getElementById('simonLevel').textContent = `Level: ${level}`;
+                            playerSequence = [];
+                            sequence.push(colors[Math.floor(Math.random() * colors.length)]);
+                        }
+                    }
+                };
+                
+                grid.appendChild(btn);
+            });
+            
+            sequence.push(colors[Math.floor(Math.random() * colors.length)]);
+        }
+
+        function initTetris() {
+            const canvas = document.getElementById('tetrisCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = '#00d4ff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            for (let i = 0; i < 20; i++) {
+                ctx.strokeRect(0, i * 20, canvas.width, 20);
+            }
+        }
+
+        function initBallBounce() {
+            const canvas = document.getElementById('bounceCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let ball = {x: 200, y: 50, radius: 10, dy: 5};
+            let paddle = {x: 175, width: 50, height: 10, y: 280};
+            let bounces = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                paddle.x = e.clientX - rect.left - paddle.width / 2;
+            });
+
+            const interval = setInterval(() => {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ball.y += ball.dy;
+                
+                if (ball.y + ball.radius > paddle.y && ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
+                    ball.dy *= -1;
+                    bounces++;
+                }
+                
+                if (ball.y - ball.radius < 0) ball.dy *= -1;
+                if (ball.y > canvas.height) {
+                    clearInterval(interval);
+                    showNotification(`Bounces: ${bounces}`);
+                    earnCoins(110);
+                    return;
+                }
+                
+                ctx.fillStyle = '#ffd700';
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+            }, 30);
+        }
+
+        function initFlappyBird() {
+            const canvas = document.getElementById('flappyCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let bird = {x: 50, y: 200, radius: 15, dy: 0};
+            let gravity = 0.5;
+            let pipes = [];
+            let score = 0;
+
+            document.addEventListener('click', () => {
+                bird.dy = -10;
+            });
+
+            const interval = setInterval(() => {
+                bird.y += bird.dy;
+                bird.dy += gravity;
+                
+                ctx.fillStyle = '#87ceeb';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#ffd700';
+                ctx.beginPath();
+                ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                if (bird.y > canvas.height || bird.y < 0) {
+                    clearInterval(interval);
+                    earnCoins(140);
+                }
+            }, 30);
+        }
+
+        function initCatchGame() {
+            const canvas = document.getElementById('catchCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let basket = {x: 175, width: 50, height: 10, y: 350};
+            let items = [];
+            let score = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                basket.x = e.clientX - rect.left - basket.width / 2;
+            });
+
+            setInterval(() => {
+                if (Math.random() < 0.02) {
+                    items.push({x: Math.random() * 400, y: 0, radius: 5});
+                }
+            }, 100);
+
+            const interval = setInterval(() => {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                items.forEach(item => {
+                    item.y += 3;
+                    ctx.fillStyle = '#ffd700';
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillRect(basket.x, basket.y, basket.width, basket.height);
+                
+                items = items.filter(item => {
+                    if (item.y > basket.y && item.x > basket.x && item.x < basket.x + basket.width) {
+                        score++;
+                        return false;
+                    }
+                    return item.y < canvas.height;
+                });
+            }, 30);
+        }
+
+        // Coin Functions
+        function earnCoins(amount) {
+            currentUser.coins += amount;
+            currentUser.rank = calculateRank(currentUser.coins);
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserInfo();
+            showNotification(`+${amount} coins! 💰`);
+        }
+
+        function calculateRank(coins) {
+            if (coins >= 25000) return 'Legend';
+            if (coins >= 10000) return 'Master';
+            if (coins >= 5000) return 'Pro';
+            if (coins >= 2000) return 'Gold';
+            if (coins >= 500) return 'Silver';
+            return 'Bronze';
+        }
+
+        function updateUserInfo() {
+            document.getElementById('coins').textContent = currentUser.coins;
+            document.getElementById('rank').textContent = currentUser.rank;
+        }
+
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboardList');
+            list.innerHTML = leaderboard.map(item => `
+                <div class="leaderboard-item">
+                    <span class="leaderboard-rank">#${item.rank}</span>
+                    <span class="leaderboard-name">${item.name}</span>
+                    <span class="leaderboard-coins">${item.coins} 💰</span>
+                </div>
+            `).join('');
+        }
+
+        function showNotification(message) {
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        // Start App
+        init();
+    </script>
+</body>
+</html>
